@@ -1,0 +1,15 @@
+<program> ::= <statement_list>
+
+<statement_list> ::= <statement> | <statement> <statement_list>
+<statement> ::= <print_statement> | <input_statement> | <assignment> | <if_statement>
+
+<print_statement> ::= "wyswietl" "(" <expression> ")" ";"
+<input_statement> ::= "podaj" "(" <identifier> ")" ";"
+<assignment> ::= <expression> "=" <identifier> ";"
+<if_statement> ::= "jezeli" "(" <expression> ")" "{" <statement_list> "}" ";"
+
+<expression> ::= <term> (("+" | "-") <term>)*
+<term> ::= <factor> (("*" | "/") <factor>)*
+<factor> ::= <number> | <identifier> | "(" <expression> ")"
+<number> ::= [0-9]+
+<identifier> ::= [a-zA-Z][a-zA-Z0-9]*

@@ -73,7 +73,6 @@ void add_variables(Environment *env, Variable *variable){
 int evaluate_expression(Environment *env, ASTNode *node){
     switch(node->data.expression.type){
         case EXPR_NUMBER:
-            printf("Evaluating number: %d\n", node->data.expression.value.number);
             return node->data.expression.value.number;
         case EXPR_IDENTIFIER: {
             Variable *variable = find_variable(env, node->data.expression.value.identifier);     
@@ -109,14 +108,11 @@ int evaluate_expression(Environment *env, ASTNode *node){
 }
 
 void interpret_statement(Environment *env, ASTNode *node){
-    printf("NODE TYPE: %d\n", node->type);
     switch (node->type){
         case NODE_PRINT:
-            printf("Interpreting print statement\n");
             printf("%d\n", evaluate_expression(env, node->data.print_statement.expression));
             break;
         case NODE_INPUT: {
-            printf("Interpreting input statement\n");
             int value;
             printf("Enter value for %s: ", node->data.input_statement.identifier);
             scanf("%d", &value);
@@ -131,7 +127,6 @@ void interpret_statement(Environment *env, ASTNode *node){
             break;
         }
         case NODE_ASSIGNMENT: {
-            printf("Interpreting assignment\n");
             int value = evaluate_expression(env, node->data.assignment.expression);
             Variable *variable = find_variable(env, node->data.assignment.identifier);
             if(variable){
@@ -154,17 +149,14 @@ void interpret_statement(Environment *env, ASTNode *node){
 }
 
 void interpret_program(ASTNode *program){
-    printf("Interpreting dupa stefana\n");
     Environment *env = create_environment();
     ASTNode *current = program;
 
     while(current){
-        printf("Current node type: %d\n", current->type);
         interpret_statement(env, current);
         current = current->next;
     }
 
 
     free_environment(env); 
-    printf("Finished interpreting program\n");
 }

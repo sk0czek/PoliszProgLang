@@ -39,7 +39,6 @@ ASTNode *create_node(){
 // zwalnia pamiec uzywana przez wezel AST, 
 void free_node(ASTNode *node){
     while(node){
-        printf("Freeing node of type: %d\n", node->type);
         ASTNode *next_node = node->next;
         switch(node->type){
             case NODE_PRINT: free_node(node->data.print_statement.expression); break;
@@ -94,7 +93,6 @@ Token *next_token(Parser *parser){
 // funkcja oczekujaca konkretnego typu tokenu, przesuwajaca parser do nastpnego tokenu i zwracajaca aktualny token
 Token *expect_token(Parser *parser, TokenType type){
     Token *token = current_token(parser);
-    printf("Current token: %d\n", token->type);
     if(token->type != type){
         fprintf(stderr, "Expected token type %d, but got %d\n", type, token->type);
         exit(1);
@@ -105,11 +103,8 @@ Token *expect_token(Parser *parser, TokenType type){
 
 // funkcja parsujaca wyrazenia. obsluguje liczby i identyfikatory (TOKEN_NUMBER, TOKEN_IDENTIFIER)
 ASTNode *parse_expression(Parser *parser){
-    printf("Parsing expression\n");
     Token *token = current_token(parser);
-    printf("Ezxpression token type: %d\n", token->type);
     if(token->type == TOKEN_NUMBER){
-        printf("Parsing number: %s\n", token->value);
         ASTNode *node = create_node();
         node->type = NODE_EXPRESSION;
         node->data.expression.type = EXPR_NUMBER;
@@ -119,7 +114,6 @@ ASTNode *parse_expression(Parser *parser){
         return node;
     }
     else if (token->type == TOKEN_IDENTIFIER){
-        printf("Parsing identifier: %s\n", token->value);
         ASTNode *node = create_node();
         node->type = NODE_EXPRESSION;
         node->data.expression.type = EXPR_IDENTIFIER;
@@ -134,13 +128,11 @@ ASTNode *parse_expression(Parser *parser){
 }
 
 ASTNode *parse_print_statement(Parser *parser){
-    printf("Parsing print statement (print in parse_print_statment)\n");
     expect_token(parser, TOKEN_PRINT);
     expect_token(parser, TOKEN_LPAREN);
     ASTNode *expression = parse_expression(parser);
     expect_token(parser, TOKEN_RPAREN);
     expect_token(parser, TOKEN_SEMICOLON);
-    printf("Finished parsing print statement\n");
 
     ASTNode *node = create_node();
     node->type = NODE_PRINT;
@@ -203,7 +195,6 @@ ASTNode *parse_if_statement(Parser *parser){
 
 ASTNode *parse_statement(Parser *parser){
     Token *token = current_token(parser);
-    printf("Parsing statement with token: %d\n", token->type);
     if(token->type == TOKEN_PRINT){
         return parse_print_statement(parser);
     }
@@ -227,9 +218,7 @@ ASTNode *parse_program(Parser *parser) {
     ASTNode *last_statement = NULL;
     
     while (1) {
-        printf("Current token in parse program: %d\n", current_token(parser)->type);
         if (current_token(parser)->type == 14) {
-            printf("Reached end of token stream in parse_program.\n");
             break;
         }
         ASTNode *statement = parse_statement(parser);
@@ -241,8 +230,6 @@ ASTNode *parse_program(Parser *parser) {
             last_statement->next = statement;
         }
         last_statement = statement;
-        printf("Parsed statement added to program\n");
     }
-    printf("Finished parsing program\n");
     return program;
 }

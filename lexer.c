@@ -88,7 +88,6 @@ Token *lexer_next_token(Lexer *lexer){
             }
         }
         if(isdigit(current)){
-            printf("There is a digit!\n");
             size_t start = lexer->position;
 
             while(isdigit(lexer->source[lexer->position])){
@@ -116,7 +115,6 @@ Token *lexer_next_token(Lexer *lexer){
 
         lexer->position++;
     }
-    printf("Generating TOKNE_END\n");;
     return create_token(TOKEN_END, "");
 }
 
@@ -143,9 +141,6 @@ Token *tokenize(Lexer *lexer) {
             tokens[token_count].value = NULL;
         }
         token_count++;
-
-        printf("Tokenized: %s\n", token->value ? token->value : "NULL");
-        printf("Token type: %d\n\n", token->type);
 
         free_token(token); // Zwolnienie pamięci zaalokowanej dla pojedynczego tokenu
     }
