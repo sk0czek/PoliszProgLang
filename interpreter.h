@@ -23,7 +23,7 @@ void free_variable(Variable *variable);
 Environment *create_environment();
 void free_environment(Environment *env);
 Variable *find_variable(Environment *env, const char *name);
-void add_variable(Environment *env, Variable *variable);
+void add_variables(Environment *env, Variable *variable);
 int evaluate_expression(Environment *env, ASTNode *node);
 void interpret_statement(Environment *env, ASTNode *node);
 void interpret_program(ASTNode *program);

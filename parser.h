@@ -12,7 +12,7 @@ typedef struct ASTNode {
         NODE_PRINT, NODE_INPUT, NODE_ASSIGNMENT, NODE_IF, NODE_EXPRESSION
     } type;
     union {
-        struct { struct ASTNODE *expression; } print_statement;
+        struct { struct ASTNode *expression; } print_statement;
         struct { char *identifier; } input_statement;
         struct { struct ASTNode *condition; struct ASTNode *body;} if_statement;
         struct { char *identifier; struct ASTNode *expression;} assignment;

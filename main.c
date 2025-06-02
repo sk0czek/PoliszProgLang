@@ -5,10 +5,9 @@
 #include "parser.h"
 #include "interpreter.h"
 
-// Deklaracje funkcji leksera, parsera i interpretera...
 
 int main(int argc, char *argv[]){
-    const char *source_code = "wyswietl(123);";
+    const char *source_code = "b=10;wyswietl(b);podaj(x);wyswietl(x);";
     
     // Tokenizacja (Lexer)
     Lexer *lexer = create_lexer(source_code);
@@ -21,12 +20,8 @@ int main(int argc, char *argv[]){
 
     interpret_program(program);
 
-    // Zwolnienie zasobow
-    // for(Token *token = tokens; token->type != TOKEN_END; ++token){
-    //     free_token(token);
-    // }
-    
-    free(tokens); // Ponieważ tokenize używa realloc, musimy tylko zwolnić pamięć tokenów
+
+    free_tokens(tokens);
     free_lexer(lexer);
     free_node(program);
     free_parser(parser); 

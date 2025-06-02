@@ -8,6 +8,11 @@ typedef enum {
     TOKEN_PLUS, TOKEN_MINUS, TOKEN_STAR, TOKEN_SLASH, TOKEN_NUMBER, TOKEN_PRINT, TOKEN_INPUT, TOKEN_IF, TOKEN_ASSIGN, TOKEN_LBRACE, TOKEN_RBRACE, TOKEN_LPAREN, TOKEN_RPAREN , TOKEN_SEMICOLON, TOKEN_END, TOKEN_IDENTIFIER
 } TokenType;
 
+// struktra reprezentujaca stan lexera, zawiera zrodlowy ciag znakow oraz aktualna pozycje
+typedef struct {
+    char *source;
+    size_t position;
+} Lexer;
 // struktura reprezentujaca tokem, zawiera typ tokenu oraz jego warrtosc
 typedef struct {
     TokenType type;
@@ -31,11 +36,15 @@ void free_token(Token *token){
     }
 }
 
-// struktra reprezentujaca stan leksera, zawiera zrodlowy ciag znakow oraz aktualna pozycje
-typedef struct {
-    char *source;
-    size_t position;
-} Lexer;
+// funkcja zwalniajaca pamiec dla calej tablicy tokenow
+void free_tokens(Token *tokens) {
+    for(int i = 0; tokens[i].type != TOKEN_END; i++) {
+        if(tokens[i].value) {
+            free(tokens[i].value);
+        }
+    }
+    free(tokens);
+}
 
 // funkcja tworzaca nowy lexer
 Lexer *create_lexer(const char *source){
@@ -86,7 +95,10 @@ Token *lexer_next_token(Lexer *lexer){
                 free(identifier);
                 return create_token(TOKEN_IF, "jezeli");
             }
+
+            return create_token(TOKEN_IDENTIFIER, identifier);
         }
+        
         if(isdigit(current)){
             size_t start = lexer->position;
 

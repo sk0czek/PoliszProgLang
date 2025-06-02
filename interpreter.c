@@ -138,7 +138,7 @@ void interpret_statement(Environment *env, ASTNode *node){
             break;
         }
         case NODE_IF: {
-            if(evaluate_expression(env, node->data.if_statement.condition)){ // bug
+            if(evaluate_expression(env, node->data.if_statement.condition)){ 
                 interpret_statement(env, node->data.if_statement.body);
             }
             break;

@@ -162,6 +162,7 @@ ASTNode *parse_assignment(Parser *parser){
     expect_token(parser, TOKEN_SEMICOLON);
 
     ASTNode *node = create_node();
+    node->type = NODE_ASSIGNMENT;
     node->data.assignment.identifier = strdup(identifier->value);
     node->data.assignment.expression = expression;
 
@@ -218,7 +219,7 @@ ASTNode *parse_program(Parser *parser) {
     ASTNode *last_statement = NULL;
     
     while (1) {
-        if (current_token(parser)->type == 14) {
+        if (current_token(parser)->type == TOKEN_END) { // lub 14 zamienic na TOKEN_END
             break;
         }
         ASTNode *statement = parse_statement(parser);
